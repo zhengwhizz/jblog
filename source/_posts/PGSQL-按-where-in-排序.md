@@ -1,7 +1,11 @@
 ---
 title: PGSQL 按 where in 排序
 date: 2021-08-13 03:52:11
-tags: PGSQL 数据库
+categories:
+    - 互联网
+tags: 
+    - PGSQL
+    - 数据库
 ---
 
 ## 
