@@ -290,18 +290,19 @@ widgets:
         position: left
         type: subscribe_email
         # Hint text under the email input
-        description: 
+        description:  
         # Feedburner ID
         feedburner_id: ''
     # Google AdSense unit configurations
+    # <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8632806708581002" crossorigin="anonymous"></script>
     -
         # Where should the widget be placed, left sidebar or right sidebar
         position: left
         type: adsense
         # AdSense client ID
-        client_id: ''
+        client_id: 'ca-pub-8632806708581002'
         # AdSense AD unit ID
-        slot_id: ''
+        slot_id: '4867121906'
     # Follow.it email subscription widget configurations
     -
         # Where should the widget be placed, left sidebar or right sidebar
@@ -337,9 +338,9 @@ plugins:
     # https://www.umeng.com/web
     cnzz:
         # CNZZ tracker id
-        id: 
+        id: 1280221269
         # CNZZ website id
-        web_id: 
+        web_id: 1280221269
     # Alerting users about the use of cookies
     # https://www.osano.com/cookieconsent/
     cookie_consent:
