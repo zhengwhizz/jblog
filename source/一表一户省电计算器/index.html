@@ -1,0 +1,215 @@
+<html>
+
+<head>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        input {
+            border: 1px solid #eee;
+            padding: 5px 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="m-5">
+        <form action="#" method="POST">
+            <div class="shadow overflow-hidden p-3">
+                <div class="col-span-6">
+                    <label for="diliang" class="block text-sm font-medium text-gray-700">年用电量</label>
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                        <input required type="number" min="1" max="999999" name="diliang" id="diliang"
+                            class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
+                            placeholder="一年用多少度电？">
+                        <span
+                            class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                            度/年
+                        </span>
+                    </div>
+                </div>
+                <div class="col-span-6 mt-3">
+                    <label for="fee" class="block text-sm font-medium text-gray-700">当前收费</label>
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                        <input type="text" name="fee" id="fee" required type="number" min="0" max="999999"
+                            class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
+                            value="0.51">
+                        <span
+                            class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                            元/度
+                        </span>
+                    </div>
+                </div>
+                <div class="mt-2 px-4 py-3 text-center sm:px-6">
+                    <button id="calcbtn" type="submit"
+                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        计算
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div id="result" class="hidden">
+            <div class="text-center m-3 mt-5 font-medium "> 计算结果 </div>
+
+            <div class="bg-indigo-600 bg-opacity-100 border rounded-md text-white p-5">
+                当前收费：<span id="feewuye">0</span> 元 <br />
+                一户一表收费：<span id="feeyihu">0</span> 元 <br />
+                全年节省：<b><span id="jiesheng">0</span></b> 元 <br />
+                <span id="jianyi"></span>
+            </div>
+            <div id="result-table" class="mt-3"></div>
+        </div>
+
+        <div class="text-center m-3 mt-5 font-medium"> 一户一表收费标准 </div>
+        <div class="border-t border-gray-200">
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">
+                    电能替代
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    每年 0-1560 度
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    0.36 元/度
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">
+                    第一档
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    每年 1561-3600 度
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    0.45 元/度
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">
+                    第二档
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    每年 3601-4680 度
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    0.5 元/度
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-5 sm:gap-4 sm:px-6">
+                <div class="text-sm font-medium text-gray-500">
+                    第三档
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    每年 4681 度及以上
+                </div>
+                <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    0.8 元/度
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script>
+
+        const names = [
+            '电能替代',
+            '第一档',
+            '第二档',
+            '第三档',
+        ]
+        const levels = [
+            [1, 1560],
+            [1561, 3600],
+            [3601, 4680],
+            [4681, 99999999],
+        ]
+        const fees = [
+            0.36,
+            0.45,
+            0.5,
+            0.8
+        ]
+
+        const calcbtn = document.getElementById("calcbtn");
+        const diliang = document.getElementById("diliang");
+        const fee = document.getElementById("fee");
+        const result = document.getElementById("result");
+
+        const jianyi = document.getElementById("jianyi");
+        const feewuye = document.getElementById("feewuye");
+        const feeyihu = document.getElementById("feeyihu");
+        const jiesheng = document.getElementById("jiesheng");
+
+        let results = [], totalfee = 0;
+
+        calcbtn.onclick = function (e) {
+            if (!diliang.value) return;
+            results = [];
+            totalfee = 0
+
+            let level = findLevel(diliang.value)
+
+            calc(diliang.value, level)
+
+            let html = "<table class='table-auto w-full border rounded text-center'>";
+            results.forEach(function (item) {
+                html += "<tr><td class='p-3 border'>" + names[item.level] + "</td><td class='p-3 border'>" + item.unitprice + "元/度</td><td class='p-3 border text-right'>" + item.dushu + "度</td><td class='p-3 border text-right'>" + item.dianfei + "元</td></tr>";
+            })
+            html += "<tr><td class='p-3 border'>合计</td><td class='p-3 border'></td><td class='p-3 border text-right'>" + diliang.value + " 度</td><td class='p-3 border text-right'>" + totalfee + " 元</td></tr></table>";
+
+            let table = document.getElementById('result-table');
+            table.innerHTML = html;
+
+
+            let wuye = (fee.value * diliang.value).toFixed(2)
+            let yihu = totalfee.toFixed(2)
+
+            feewuye.innerText = wuye
+            feeyihu.innerText = yihu
+            jiesheng.innerText = (wuye - yihu).toFixed(2)
+            if (yihu > 1640) {
+                jianyi.innerText = "建议购买套餐更省费用"
+            } else {
+                jianyi.innerText = ""
+            }
+            result.className = '';
+            return false;
+        }
+
+        function findLevel(v) {
+            let l;
+            levels.forEach(function (i, k) {
+                if (v >= i[0] && v <= i[1]) {
+                    l = k;
+                    return;
+                }
+            })
+            return l;
+        }
+
+
+        function calc(v, currentLevel) {
+            if (currentLevel < 0) {
+                return;
+            }
+            let dushu, dianfei;
+            dushu = Math.min(v, levels[currentLevel][1]) - levels[currentLevel][0] + 1;
+            dianfei = dushu * fees[currentLevel]
+            results.push({
+                'dushu': dushu,
+                'dianfei': dianfei.toFixed(2),
+                'unitprice': fees[currentLevel],
+                'level': currentLevel
+            })
+            totalfee += dianfei
+            calc(v, currentLevel - 1)
+        }
+
+    </script>
+
+
+</body>
+
+</html>
