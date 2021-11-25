@@ -18,7 +18,7 @@
                     <label for="diliang" class="block text-sm font-medium text-gray-700">年用电量</label>
                     <div class="mt-1 flex rounded-md shadow-sm">
                         <input required type="number" min="1" max="999999" name="diliang" id="diliang"
-                            class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
+                            class="focus:ring-indigo-500 focus:border-indigo-500 flex-1   w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
                             placeholder="一年用多少度电？">
                         <span
                             class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
@@ -30,7 +30,7 @@
                     <label for="fee" class="block text-sm font-medium text-gray-700">当前收费</label>
                     <div class="mt-1 flex rounded-md shadow-sm">
                         <input type="text" name="fee" id="fee" required type="number" min="0" max="999999"
-                            class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
+                            class="focus:ring-indigo-500 focus:border-indigo-500 flex-1   w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
                             value="0.51">
                         <span
                             class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
@@ -40,7 +40,7 @@
                 </div>
                 <div class="mt-2 px-3 py-3 text-center">
                     <button id="calcbtn" type="submit"
-                        class="inline-flex justify-center py-3 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        class="inline-flex w-1/3 justify-center py-3 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         计算
                     </button>
                 </div>
@@ -154,11 +154,11 @@
             calc(diliang.value, level)
 
             let html = "<table class='table-auto w-full border rounded text-center'>";
-            html += "<tr><th>档次</th><th>单价</th><th>度数</th><th>金额</th><tr>";
+            html += "<tr><th class='p-3 border'>档次</th><th class='p-3 border'>单价</th><th class='p-3 border'>度数</th><th class='p-3 border text-right'>金额（元）</th><tr>";
             results.forEach(function (item) {
-                html += "<tr><td class='p-3 border'>" + names[item.level] + "</td><td class='p-3 border'>" + item.unitprice + "</td><td class='p-3 border text-right'>" + item.dushu + "度</td><td class='p-3 border text-right'>" + item.dianfei + "元</td></tr>";
+                html += "<tr><td class='p-3 border'>" + names[item.level] + "</td><td class='p-3 border'>" + item.unitprice + "</td><td class='p-3 border'>" + item.dushu + "</td><td class='p-3 border text-right'>" + item.dianfei + "</td></tr>";
             })
-            html += "<tr><td class='p-3 border'>合计</td><td class='p-3 border'></td><td class='p-3 border text-right'>" + diliang.value + " 度</td><td class='p-3 border text-right'>" + totalfee + " 元</td></tr></table>";
+            html += "<tr><td class='p-3 border'>合计</td><td class='p-3 border'></td><td class='p-3 border'>" + diliang.value + "</td><td class='p-3 border text-right'>" + totalfee + "</td></tr></table>";
 
             let table = document.getElementById('result-table');
             table.innerHTML = html;
