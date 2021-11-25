@@ -13,6 +13,11 @@ alert('Hello World!');
 {% raw %}
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <div class="container mx-auto">
-  <input type="text" class="border rounded-md"></input>
+  <form>
+  <input class="border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent ">
+  <button class="bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 ">
+    Sign up
+  </button>
+</form>
 </div>
 {% endraw %}
