@@ -6,9 +6,9 @@ categories:
 tags:
     - 省电计算器
 ---
-{% codeblock %}
-alert('Hello World!');
-{% endcodeblock %}
+
+{% iframe calc.html %}
+
 
 {% raw %}
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
